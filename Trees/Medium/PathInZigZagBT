@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> pathInZigZagTree(int label) {
+        int n=log2(label);
+        vector<int>arr;
+        arr.push_back(label);
+        int level=n;
+        cout<<n<<"\n";
+        while(label>0){
+           int pstart,pend;
+           int temp=label/2; 
+           level--;
+           pstart=pow(2,level); 
+           pend=pow(2,level+1)-1;
+         //  cout<<pstart<<" "<<pend<<" "<<temp<<"\n"; 
+           label=pend-temp+pstart; 
+           if(label<=0){
+               break;
+           } 
+           arr.push_back(label); 
+        }
+        reverse(arr.begin(),arr.end());
+        return arr;
+    }
+};
