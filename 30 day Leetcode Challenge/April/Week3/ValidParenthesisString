@@ -1,0 +1,67 @@
+class Solution {
+public:
+    bool checkValidString(string s) {
+        int n=s.size();
+        int j;
+        stack<char>st;
+        for(j=0;j<n;j++){
+            if(st.empty()){
+                st.push(s[j]);
+            }
+            else if(s[j]==')'){
+                int count=0;
+                while(!st.empty()&&st.top()=='*'){
+                    count++;
+                    st.pop();
+                }
+                if(st.empty()||st.top()==')'){
+                    int k;
+                    for(k=0;k<count;k++){
+                        st.push('*');
+                    }
+                    st.push(s[j]);
+                }
+                else{
+                    st.pop();
+                    int k;
+                    for(k=0;k<count;k++){
+                        st.push('*');
+                    }
+                }
+            }
+            else{
+               st.push(s[j]); 
+            }
+        }
+        int count=0;
+        int neg=0;
+        int flag=0;
+        while(!st.empty()){
+            if(st.top()=='*'){
+                count++;
+                if(flag==1){
+                    neg--;
+                    count--;
+                    flag=0;
+                }
+                st.pop();
+            }
+            else if(st.top()=='('){
+                if(count==0){
+                    return false;
+                }
+                count--;
+                st.pop();
+            }
+            else{
+                neg++;
+                st.pop();
+                flag=1;
+            }
+        }
+        if(neg>0){
+            return false;
+        }
+        return true;
+    }
+};
