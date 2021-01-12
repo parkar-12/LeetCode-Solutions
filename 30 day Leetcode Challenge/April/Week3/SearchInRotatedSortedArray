@@ -1,0 +1,50 @@
+int findpivot(vector<int>arr,int low,int high){
+    if(low>high){
+        return -1;
+    }
+    int mid=(low+high)/2;
+    if(mid>0&&arr[mid]<arr[mid-1]){
+        return mid;
+    }
+    if(arr[mid]<arr[high]){
+        return findpivot(arr,low,mid-1);
+    }
+    else{
+        return findpivot(arr,mid+1,high);
+    }
+}
+
+int bs(vector<int>arr,int low,int high,int target){
+    if(low>high){
+        return -1;
+    }
+    int mid=(low+high)/2;
+    if(arr[mid]==target){
+        return mid;
+    }
+    if(arr[mid]>target){
+        return bs(arr,low,mid-1,target);
+    }
+    else{
+        return bs(arr,mid+1,high,target);
+    }
+}
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n=nums.size();
+        int pivot=findpivot(nums,0,n-1);
+    //    cout<<pivot<<"\n";
+        if(pivot==-1){
+            return bs(nums,0,n-1,target);
+        }
+        else{
+            if(target>=nums[0]&&target<=nums[pivot-1])
+                return bs(nums,0,pivot-1,target);
+            else
+                return bs(nums,pivot,n-1,target);
+        }
+        return -1;
+    }
+};
