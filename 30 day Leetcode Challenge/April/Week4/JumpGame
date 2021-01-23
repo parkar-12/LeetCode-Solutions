@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int n=nums.size();
+        int j;
+        int max_index=0;
+        j=0;
+        while(j<n){
+            int maxi=0;
+            int k;
+            int l=j;
+            for(k=l;k<=max_index;k++){
+                if(k+nums[k]>maxi){
+                    maxi=k+nums[k];
+                }
+                j++;
+            }
+            max_index=maxi;
+            if(maxi>=(n-1)){
+                return true;
+            }
+            if(j>max_index){
+                return false;
+            }
+        }
+        return false;
+    }
+};
