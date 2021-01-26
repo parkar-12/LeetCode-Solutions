@@ -1,0 +1,42 @@
+// The API isBadVersion is defined for you.
+// bool isBadVersion(int version);
+
+
+int func(long long int low,long long int high){
+    if(low>high){
+        return -1;
+    }
+    if(low==high){
+        if(isBadVersion(low)){
+            return low;
+        }
+        else
+            return -1;
+    }
+    long long int mid=(low+high)/2;
+    if(mid==1){
+        if(isBadVersion(mid)){
+            return mid;
+        }
+        else
+            return func(mid+1,high);
+    }
+    bool temp1=isBadVersion(mid);
+    bool temp=isBadVersion(mid-1);
+    if(temp1&&(!temp)){
+        return mid;
+    }
+    if(temp1&&temp){
+        return func(low,mid);
+    }
+    else{
+        return func(mid+1,high);     
+    }
+}
+
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        return func(1,n);
+    }
+};
