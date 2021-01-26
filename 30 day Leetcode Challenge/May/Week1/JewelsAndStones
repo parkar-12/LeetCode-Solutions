@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int numJewelsInStones(string jewels, string stones) {
+        unordered_map<char,int>mp;
+        int j;
+        for(j=0;j<jewels.size();j++){
+            mp[jewels[j]]++;
+        }
+        int ans=0;
+        for(j=0;j<stones.size();j++){
+            if(mp[stones[j]]>0){
+                ans++;
+            }
+        }
+        return ans;
+    }
+};
