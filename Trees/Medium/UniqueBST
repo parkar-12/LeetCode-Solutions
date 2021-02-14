@@ -1,0 +1,22 @@
+long long int binomial(int n,int k){
+    long long int ans=1;
+    int i;
+    if (k > n - k){ 
+        k = n - k;
+    }
+    for(i=0;i<k;i++){
+        ans=ans*(n-i);
+        ans=ans/(i+1);
+    }
+    return ans;
+}
+
+
+class Solution {
+public:
+    int numTrees(int n) {
+        long long int temp=binomial(2*n,n);
+        int ans=temp/(n+1);
+        return ans;
+    }
+};
