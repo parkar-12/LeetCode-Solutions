@@ -1,0 +1,96 @@
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+void preorder(TreeNode *root,string &str){
+    if(root==NULL){
+        return ;
+    }
+    str=str+to_string(root->val)+',';
+    preorder(root->left,str);
+    preorder(root->right,str);
+}
+vector<int>convertToVector(string str){
+    vector<int>arr;
+    int j;
+    int n=str.size();
+    string temp="";
+    for(j=0;j<n;j++){
+        if(str[j]==','){
+            int a=stoi(temp);
+            arr.push_back(a);
+            temp="";
+        }
+        else{
+            temp=temp+str[j];
+        }
+    }
+    return arr;
+}
+TreeNode* bstFromPreorder(vector<int>& preorder) {
+        if(preorder.size()==0){
+            return NULL;
+        }
+        stack<TreeNode *>st;
+        int j;
+        TreeNode *current;
+        TreeNode *root;
+        int flag=0;
+        for(j=0;j<preorder.size();j++){
+            TreeNode *temp=new TreeNode(preorder[j]);
+            if(flag==0){
+                root=temp;
+                flag=1;
+            }
+            if(st.empty()){
+                st.push(temp);
+            }
+            else{
+                if(preorder[j]<st.top()->val){
+                    st.top()->left=temp;
+                }
+                else{
+                    while(!st.empty()&&st.top()->val<preorder[j]){
+                        current=st.top();
+                        st.pop();
+                    }
+                    current->right=temp;
+                }
+                st.push(temp);
+            }
+        };
+        return root;
+    }
+
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string str="";
+        preorder(root,str);
+        return str;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        string prestr=data;
+        int n=data.size();
+        int j;
+        int flag=0;
+        vector<int>pre=convertToVector(prestr);
+        int index=0;
+        return bstFromPreorder(pre);
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
