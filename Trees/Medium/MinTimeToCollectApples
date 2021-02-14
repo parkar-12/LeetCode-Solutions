@@ -1,0 +1,41 @@
+int dfs(vector<int>graph[],bool visited[],int src,vector<bool>&hasApple){
+    visited[src]=true;
+    int j;
+    int count=0;
+    for(j=0;j<graph[src].size();j++){
+        int v=graph[src][j];
+        if(visited[v]==false){
+            count=count+dfs(graph,visited,v,hasApple);
+        }
+    }
+    if(count==0&&hasApple[src]==false){
+        return count;
+    }
+    return count+2;
+}
+
+
+
+class Solution {
+public:
+    int minTime(int n, vector<vector<int>>& edges, vector<bool>& hasApple) {
+        int s=edges.size();
+        vector<int>graph[n+1];
+        int j;
+        for(j=0;j<s;j++){
+            int u=edges[j][0];
+            int v=edges[j][1];
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+        }
+        bool visited[n+1];
+        for(j=0;j<n;j++){
+            visited[j]=false;
+        }
+        int ans=dfs(graph,visited,0,hasApple);
+        if(ans==0){
+            return 0;
+        }
+        return ans-2;
+    }
+};
