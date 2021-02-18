@@ -1,0 +1,43 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+void func(TreeNode *root,int sum,int val,int &count,map<int,int>mp){
+    if(root==NULL){
+        return;
+    }
+    val=val+root->val;
+    mp[val]++;
+    if(mp[val-sum]>0){
+        if(sum==0){
+           count=count+mp[val-sum]-1; 
+        }
+        else
+        count=count+mp[val-sum];
+    }
+    func(root->left,sum,val,count,mp);
+    func(root->right,sum,val,count,mp);
+}
+    
+class Solution {
+public:
+    int pathSum(TreeNode* root, int sum) {
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+        if(root==NULL){
+            return 0;
+        }
+        map<int,int>mp;
+        int count=0;
+        mp[0]=1;
+        func(root,sum,0,count,mp);
+        return count;
+    }
+};
