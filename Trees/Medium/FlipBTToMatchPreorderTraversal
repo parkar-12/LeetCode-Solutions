@@ -1,0 +1,64 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+bool func(TreeNode *root,vector<int>voyage,vector<int>&arr,int &count){
+    if(root==NULL&&count==voyage.size()){
+        return true;
+    }
+    if(root==NULL){
+        return true;
+    } 
+    if(root->val!=voyage[count]){
+        return false;
+    }
+    if(root->left==NULL&&root->right==NULL){
+        if(root->val=voyage[count]){
+            count++;
+            return true;
+        }
+        return false;
+    }
+    count++;
+    bool l,r;
+    l=r=false;
+    if(root->left!=NULL&&root->left->val==voyage[count]){
+        l=func(root->left,voyage,arr,count);
+        r=func(root->right,voyage,arr,count);
+    }
+    else if(root->right!=NULL&&root->right->val==voyage[count]){
+        if(root->left!=NULL){
+            arr.push_back(root->val);
+        }    
+        r=func(root->right,voyage,arr,count);
+        l=func(root->left,voyage,arr,count);
+    }
+    return l&&r;
+}
+class Solution {
+public:
+    vector<int> flipMatchVoyage(TreeNode* root, vector<int>& voyage) {
+        vector<int>arr;
+        if(root==NULL){
+            return arr;
+        }
+        int j;
+        int count=0;
+        bool ans=func(root,voyage,arr,count);
+        if(ans==true){
+            return arr;
+        }
+        else{
+            arr.clear();
+            arr.push_back(-1);
+            return arr;
+        }
+    }
+};
