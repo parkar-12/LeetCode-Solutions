@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+pair<int,int>func(TreeNode* root,int &maxi){
+    if(root==NULL){
+        pair<int,int>temp=make_pair(-1,-1);
+        return temp;
+    }
+    if(root->left==NULL&&root->right==NULL){
+        pair<int,int>temp=make_pair(root->val,1);
+        return temp;
+    }
+    pair<int,int>left=func(root->left,maxi);
+    pair<int,int>right=func(root->right,maxi);
+    int count=1;
+    int l=0;
+    int r=0;
+    if(root->val==left.first){
+        count=count+left.second;
+        l=left.second;
+    }
+    if(root->val==right.first){
+        count=count+right.second;
+        r=right.second;
+    }
+    if(count>maxi){
+        maxi=count;
+    }
+    return make_pair(root->val,max(1+l,1+r));
+}
+class Solution {
+public:
+    int longestUnivaluePath(TreeNode* root) {
+        if(root==NULL){
+            return 0;
+        }
+        int max=1;
+        pair<int,int>temp=func(root,max);
+        return max-1;
+    }
+};
