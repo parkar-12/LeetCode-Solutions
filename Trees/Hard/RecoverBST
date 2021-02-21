@@ -1,0 +1,58 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+void inorder(TreeNode* root,vector<int>&arr){
+    if(root==NULL){
+        return;
+    }
+    inorder(root->left,arr);
+    arr.push_back(root->val);
+    inorder(root->right,arr);
+    return;
+}
+void change(TreeNode *root,int x,int y){
+    if(root==NULL){
+        return;
+    }
+    change(root->left,x,y);
+    if(root->val==x){
+        root->val=y;
+    }
+    else if(root->val==y){
+        root->val=x;
+    }
+    change(root->right,x,y);
+    return;
+}
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        if(root==NULL){
+            return;
+        }
+        vector<int>arr;
+        inorder(root,arr);
+        vector<int>brr=arr;
+        sort(brr.begin(),brr.end());
+        int j;
+        vector<int>temp;
+        for(j=0;j<arr.size();j++){
+            if(arr[j]!=brr[j]){
+                temp.push_back(arr[j]);
+            }
+        }
+     //   cout<<temp.size()<<"\n";
+        int x=temp[0];
+        int y=temp[1];
+        change(root,x,y);
+        return;
+    }
+};
